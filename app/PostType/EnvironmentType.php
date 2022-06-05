@@ -34,7 +34,7 @@ class EnvironmentType
                         'show_in_menu' => false,
                         'capability_type' => 'post',
                         'public' => true,
-                        'has_archive' => true,
+                        'has_archive' => false,
                         'slug' => $environmentType['slug'],
                         'rewrite' => ['slug' => $environmentType['slug'], 'with_front' => true],
                         'supports' => ['title']

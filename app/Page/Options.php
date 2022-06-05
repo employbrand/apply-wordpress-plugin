@@ -33,9 +33,6 @@ class Options
                     ->set_html($text),
                 Field::make('text', 'employbrand_apply_company_id', 'Company ID'),
                 Field::make('text', 'employbrand_apply_api_key', 'API Key'),
-                Field::make('text', 'employbrand_apply_webhook_url', 'Webhook URL')
-                    ->set_attribute('readOnly', true)
-                    ->set_default_value(get_site_url() . '/wp-json/employbrand-apply/v1/handle-webhook?token=' . get_option('employbrand_apply_webhook_token'))
             ]);
     }
 
