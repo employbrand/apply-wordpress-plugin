@@ -1,0 +1,19 @@
+{
+  "autoload": {
+    "psr-4": {
+      "EmploybrandApply\\": "app/"
+    }
+  },
+  "require": {
+    "php": "^7.4",
+    "guzzlehttp/guzzle": "7.4",
+    "htmlburger/carbon-fields": "^3.3",
+    "ext-json": "*",
+    "employbrand/apply-php-sdk": "^1.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": false
+    }
+  }
+}
