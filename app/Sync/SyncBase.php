@@ -40,6 +40,16 @@ class SyncBase
             if( $availableCustomField->type === 'image' ) {
                 $value = ($value[ 'url' ] ?? null);
             }
+            if( $availableCustomField->type === 'dropdown' ) {
+                $metaData[ $key . '_key' ] = $value;
+
+                foreach($availableCustomField->options as $option) {
+                    if($option['value'] === $value) {
+                        $value = $option['label'];
+                        break;
+                    }
+                }
+            }
 
             $metaData[ $key ] = $value;
         }
