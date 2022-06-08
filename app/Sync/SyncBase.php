@@ -24,11 +24,14 @@ class SyncBase
     protected function getCustomFields($obj) {
         $metaData = [];
 
+        /*
+         * Normal fields
+         */
         foreach ( $obj->availableCustomFields as $availableCustomField ) {
 
             $availableCustomField = (object) $availableCustomField;
 
-            if( !in_array($availableCustomField->type, ['text', 'image', 'number', 'dropdown']) )
+            if( !in_array($availableCustomField->type, ['text', 'image', 'number', 'dropdown', 'repeater']) )
                 continue;
 
             $key = '_' . $availableCustomField->field_key;
@@ -36,6 +39,29 @@ class SyncBase
 
             if( $availableCustomField->type === 'image' ) {
                 $value = ($value[ 'url' ] ?? null);
+            }
+
+            $metaData[ $key ] = $value;
+        }
+
+        /*
+         * Functions
+         */
+        foreach ( $obj->availableCustomFields as $availableCustomField ) {
+
+            $availableCustomField = (object) $availableCustomField;
+
+            if( !in_array($availableCustomField->type, ['function']) )
+                continue;
+
+            $key = '_' . $availableCustomField->field_key;
+            $value = null;
+
+            if($availableCustomField->function_type === 'min-max') {
+                $min = $metaData['_' . $availableCustomField->min_field];
+                $max = $metaData['_' . $availableCustomField->max_field];
+
+                $value = ($min === $max ? $min : $min . ' - ' . $max);
             }
 
             $metaData[ $key ] = $value;

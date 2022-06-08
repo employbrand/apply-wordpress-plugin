@@ -11,7 +11,7 @@ class SyncVacancies extends SyncBase
 
     public function syncAll()
     {
-        $vacancies = $this->employbrandApplyClient->vacancies()->list()->all();
+        $vacancies = $this->employbrandApplyClient->vacancies()->list()->query(['all_environments' => 'true'])->all();
 
         foreach ( $vacancies as $vacancy ) {
 
