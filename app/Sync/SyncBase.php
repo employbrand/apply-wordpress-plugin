@@ -74,6 +74,10 @@ class SyncBase
                 $value = ($min === $max ? $min : $min . ' - ' . $max);
             }
 
+            if($availableCustomField->function_type === 'from-environment') {
+                $value = $obj->customFields[ 'field-' . $availableCustomField->id ] ?? null;
+            }
+
             $metaData[ $key ] = $value;
         }
 
