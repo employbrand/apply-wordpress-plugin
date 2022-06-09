@@ -13,6 +13,8 @@ class SyncVacancies extends SyncBase
     {
         $vacancies = $this->employbrandApplyClient->vacancies()->list()->query(['all_environments' => 'true'])->all();
 
+        $ids = [];
+
         foreach ( $vacancies as $vacancy ) {
 
             /*
@@ -20,6 +22,8 @@ class SyncVacancies extends SyncBase
              */
             if( $vacancy->status !== 'published' )
                 continue;
+
+            $ids[] = $vacancy->id;
 
             /*
              * Skip when version matches
@@ -31,6 +35,15 @@ class SyncVacancies extends SyncBase
                 continue;
 
             $this->syncSingle($vacancy->id);
+        }
+
+        /*
+         * Delete old
+         */
+        $query = $wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_eb_vacancy_id' AND meta_value NOT IN (" . implode(',', $ids) . ") ");
+        $WpToDelete = $wpdb->get_results($query);
+        foreach($WpToDelete as $toDelete) {
+            wp_delete_post($toDelete->post_id);
         }
     }
 
@@ -47,8 +60,13 @@ class SyncVacancies extends SyncBase
             /*
              * Only show published vacancies
              */
-            if( $vacancy->status !== 'published' )
+            if( $vacancy->status !== 'published' ) {
+                if( $wpId != null ) {
+                    wp_delete_post($wpId);
+                }
+
                 return;
+            }
 
 
             if( $wpId != null ) {

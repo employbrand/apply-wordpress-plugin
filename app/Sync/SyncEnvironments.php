@@ -13,6 +13,8 @@ class SyncEnvironments extends SyncBase
     {
         $environments = $this->employbrandApplyClient->environments()->list()->all();
 
+        $ids = [];
+
         foreach ( $environments as $environment ) {
 
             /*
@@ -20,6 +22,8 @@ class SyncEnvironments extends SyncBase
              */
             if( $environment->environmentType == null )
                 continue;
+
+            $ids[] = $environment->id;
 
             /*
              * Skip when version matches
@@ -31,6 +35,15 @@ class SyncEnvironments extends SyncBase
                 continue;
 
             $this->syncSingle($environment->id);
+        }
+
+        /*
+         * Delete old
+         */
+        $query = $wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_eb_environment_id' AND meta_value NOT IN (" . implode(',', $ids) . ") ");
+        $WpToDelete = $wpdb->get_results($query);
+        foreach($WpToDelete as $toDelete) {
+            wp_delete_post($toDelete->post_id);
         }
     }
 
