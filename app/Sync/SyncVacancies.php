@@ -109,6 +109,7 @@ class SyncVacancies extends SyncBase
              */
             $metaData = [
                 '_eb_vacancy_id' => $vacancy->id,
+                '_eb_environment_id' => $vacancy->environment->id,
                 '_version' => $vacancy->version,
                 '_publication_start_date' => $vacancy->publicationStartDate,
                 '_publication_end_date' => $vacancy->publicationEndDate,
