@@ -6,6 +6,10 @@ namespace EmploybrandApply\Entity;
 class Vacancy extends AbstractEntity
 {
 
+    protected $exclude = [
+        'environment'
+    ];
+
     public ?int $id = null;
 
     public ?string $function = null;

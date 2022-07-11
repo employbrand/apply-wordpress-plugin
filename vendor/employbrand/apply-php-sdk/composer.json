@@ -1,7 +1,7 @@
 {
   "name": "employbrand/apply-php-sdk",
   "description": "Employbrand Apply PHP SDK",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "type": "library",
   "autoload": {
     "psr-4": {
