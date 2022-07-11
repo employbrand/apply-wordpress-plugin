@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '99e601a3b686507418021e79373883eb9a8335b2',
+        'reference' => '64d48fa941bf795618271755c55e66852fdf5cdc',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '99e601a3b686507418021e79373883eb9a8335b2',
+            'reference' => '64d48fa941bf795618271755c55e66852fdf5cdc',
             'dev_requirement' => false,
         ),
         'employbrand/apply-php-sdk' => array(
