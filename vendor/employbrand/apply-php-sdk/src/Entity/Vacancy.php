@@ -22,6 +22,8 @@ class Vacancy extends AbstractEntity
 
     public array $availableCustomFields = [];
 
+    public ?Environment $environment = null;
+
     public ?string $publicationEndDate = null;
 
     public ?string $publicationStartDate = null;
@@ -29,5 +31,14 @@ class Vacancy extends AbstractEntity
     public ?string $updatedAt = null;
 
     public ?string $createdAt = null;
+
+
+    public function build(array $parameters): void
+    {
+        if($parameters[ 'environment' ] != null)
+            $this->environment = new Environment($parameters[ 'environment' ]);
+
+        parent::build($parameters);
+    }
 
 }
