@@ -3,10 +3,10 @@
 namespace EmploybrandApply\Api;
 
 
-use EmploybrandApply\Entity\Webhook as WebhookEntity;
+use EmploybrandApply\Entity\WebhookEntity;
 
 
-class Webhook extends AbstractApi
+class WebhookApi extends AbstractApi
 {
 
     /**

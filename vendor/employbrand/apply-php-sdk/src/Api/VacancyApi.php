@@ -4,10 +4,10 @@ namespace EmploybrandApply\Api;
 
 
 use EmploybrandApply\Exceptions\Http\NotFound;
-use EmploybrandApply\Entity\Vacancy as VacancyEntity;
+use EmploybrandApply\Entity\VacancyEntity;
 
 
-class Vacancy extends AbstractApi
+class VacancyApi extends AbstractApi
 {
 
     /**

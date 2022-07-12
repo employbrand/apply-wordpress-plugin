@@ -3,7 +3,7 @@
 namespace EmploybrandApply\Entity;
 
 
-class EnvironmentType extends AbstractEntity
+class EnvironmentTypeEntity extends AbstractEntity
 {
 
     public ?int $id = null;

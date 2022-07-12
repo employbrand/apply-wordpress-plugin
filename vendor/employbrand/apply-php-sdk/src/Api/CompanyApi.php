@@ -3,10 +3,10 @@
 namespace EmploybrandApply\Api;
 
 
-use EmploybrandApply\Entity\Company as CompanyEntity;
+use EmploybrandApply\Entity\CompanyEntity;
 
 
-class Company extends AbstractApi
+class CompanyApi extends AbstractApi
 {
 
     /**

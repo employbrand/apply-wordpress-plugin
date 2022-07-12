@@ -3,7 +3,7 @@
 namespace EmploybrandApply\Entity;
 
 
-class Webhook extends AbstractEntity
+class WebhookEntity extends AbstractEntity
 {
 
     public ?int $id = null;

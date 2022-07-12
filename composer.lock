@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "employbrand/apply-php-sdk",
-            "version": "1.0.14",
+            "version": "1.0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/employbrand/apply-php-sdk.git",
-                "reference": "2e9a2126eab83990985844e2277da46019766223"
+                "reference": "c60c18e1ab45d569984c997ea88353e004848d64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/employbrand/apply-php-sdk/zipball/2e9a2126eab83990985844e2277da46019766223",
-                "reference": "2e9a2126eab83990985844e2277da46019766223",
+                "url": "https://api.github.com/repos/employbrand/apply-php-sdk/zipball/c60c18e1ab45d569984c997ea88353e004848d64",
+                "reference": "c60c18e1ab45d569984c997ea88353e004848d64",
                 "shasum": ""
             },
             "require": {
@@ -41,9 +41,9 @@
             "description": "Employbrand Apply PHP SDK",
             "support": {
                 "issues": "https://github.com/employbrand/apply-php-sdk/issues",
-                "source": "https://github.com/employbrand/apply-php-sdk/tree/v1.0.14"
+                "source": "https://github.com/employbrand/apply-php-sdk/tree/v1.0.23"
             },
-            "time": "2022-07-11T20:17:38+00:00"
+            "time": "2022-07-12T15:33:38+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

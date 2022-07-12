@@ -115,6 +115,12 @@ class SyncVacancies extends SyncBase
                 '_publication_end_date' => $vacancy->publicationEndDate,
             ];
 
+            $formFields = [];
+            foreach($vacancy->formFields as $formField) {
+                $formFields[] = $formField->toArray();
+            }
+            $metaData['_form_fields'] = $formFields;
+
             /*
              * Load meta
              */

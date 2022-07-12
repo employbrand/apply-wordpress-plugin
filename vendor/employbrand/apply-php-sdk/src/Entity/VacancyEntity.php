@@ -3,11 +3,12 @@
 namespace EmploybrandApply\Entity;
 
 
-class Vacancy extends AbstractEntity
+class VacancyEntity extends AbstractEntity
 {
 
     protected $exclude = [
-        'environment'
+        'environment',
+        'formFields'
     ];
 
     public ?int $id = null;
@@ -26,7 +27,9 @@ class Vacancy extends AbstractEntity
 
     public array $availableCustomFields = [];
 
-    public ?Environment $environment = null;
+    public ?EnvironmentEntity $environment = null;
+
+    public array $formFields = [];
 
     public ?string $publicationEndDate = null;
 
@@ -40,7 +43,11 @@ class Vacancy extends AbstractEntity
     public function build(array $parameters): void
     {
         if($parameters[ 'environment' ] != null)
-            $this->environment = new Environment($parameters[ 'environment' ]);
+            $this->environment = new EnvironmentEntity($parameters[ 'environment' ]);
+
+        $this->formFields = \array_map(function ($formField) {
+            return new ApplicationFormField($formField);
+        }, $parameters[ 'form_fields' ]);
 
         parent::build($parameters);
     }

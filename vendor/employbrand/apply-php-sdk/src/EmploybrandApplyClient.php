@@ -2,10 +2,12 @@
 
 namespace EmploybrandApply;
 
-use EmploybrandApply\Api\Company;
-use EmploybrandApply\Api\Environment;
-use EmploybrandApply\Api\Vacancy;
-use EmploybrandApply\Api\Webhook;
+use EmploybrandApply\Api\CandidateApi;
+use EmploybrandApply\Api\CompanyApi;
+use EmploybrandApply\Api\EnvironmentApi;
+use EmploybrandApply\Api\FileApi;
+use EmploybrandApply\Api\VacancyApi;
+use EmploybrandApply\Api\WebhookApi;
 use EmploybrandApply\Exceptions\Http\InternalServerError;
 use EmploybrandApply\Exceptions\Http\NotFound;
 use EmploybrandApply\Exceptions\Http\NotValid;
@@ -28,12 +30,22 @@ class EmploybrandApplyClient
 
     private $environments;
 
+    private $candidates;
+
     private $company;
 
     private $webhooks;
 
+    private $files;
 
-    public function __construct(string $companyId, string $token)
+
+    public function __construct(string $companyId, string $token, $environmentId = 1)
+    {
+        return $this->init($companyId, $token, $environmentId);
+    }
+
+
+    public function init(string $companyId, string $token, int $environmentId): EmploybrandApplyClient
     {
         $this->guzzle = new Client([
             'base_uri' => $this->url,
@@ -41,6 +53,7 @@ class EmploybrandApplyClient
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
                 'X-Company' => $companyId,
+                'X-Environment' => $environmentId,
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
@@ -77,37 +90,55 @@ class EmploybrandApplyClient
     }
 
 
-    public function vacancies(): Vacancy
+    public function vacancies(): VacancyApi
     {
         if( $this->vacancies == null )
-            $this->vacancies = new Vacancy($this);
+            $this->vacancies = new VacancyApi($this);
 
         return $this->vacancies;
     }
 
 
-    public function environments(): Environment
+    public function environments(): EnvironmentApi
     {
         if( $this->environments == null )
-            $this->environments = new Environment($this);
+            $this->environments = new EnvironmentApi($this);
 
         return $this->environments;
     }
 
 
-    public function webhooks(): Webhook
+    public function webhooks(): WebhookApi
     {
         if( $this->webhooks == null )
-            $this->webhooks = new Webhook($this);
+            $this->webhooks = new WebhookApi($this);
 
         return $this->webhooks;
     }
 
 
-    public function company(): Company
+    public function candidates(): CandidateApi
+    {
+        if( $this->candidates == null )
+            $this->candidates = new CandidateApi($this);
+
+        return $this->candidates;
+    }
+
+
+    public function files(): FileApi
+    {
+        if( $this->files == null )
+            $this->files = new FileApi($this);
+
+        return $this->files;
+    }
+
+
+    public function company(): CompanyApi
     {
         if( $this->company == null )
-            $this->company = new Company($this);
+            $this->company = new CompanyApi($this);
 
         return $this->company;
     }

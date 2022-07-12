@@ -3,10 +3,10 @@
 namespace EmploybrandApply\Api;
 
 
-use EmploybrandApply\Entity\Environment as EnvironmentEntity;
+use EmploybrandApply\Entity\EnvironmentEntity;
 
 
-class Environment extends AbstractApi
+class EnvironmentApi extends AbstractApi
 {
 
     /**

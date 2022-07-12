@@ -3,7 +3,7 @@
 namespace EmploybrandApply\Entity;
 
 
-class Environment extends AbstractEntity
+class EnvironmentEntity extends AbstractEntity
 {
 
     protected $exclude = [
@@ -35,7 +35,7 @@ class Environment extends AbstractEntity
 
     public ?int $invitesCount = null;
 
-    public ?EnvironmentType $environmentType = null;
+    public ?EnvironmentTypeEntity $environmentType = null;
 
     public array $customFields = [];
 
@@ -49,7 +49,7 @@ class Environment extends AbstractEntity
     public function build(array $parameters): void
     {
         if($parameters[ 'environment_type' ] != null)
-            $this->environmentType = new EnvironmentType($parameters[ 'environment_type' ]);
+            $this->environmentType = new EnvironmentTypeEntity($parameters[ 'environment_type' ]);
 
         parent::build($parameters);
     }

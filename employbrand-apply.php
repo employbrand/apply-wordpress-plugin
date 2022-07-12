@@ -3,7 +3,7 @@
  * Plugin Name: Employbrand Apply
  * Plugin URI: https://webbedrijf.nl
  * Description: Employbrand Apply integration
- * Version: 1.2.2
+ * Version: 1.2.3
  * Author: Bart Fijneman
  * Author URI: https://employbrand.nl
  * License: GPL2

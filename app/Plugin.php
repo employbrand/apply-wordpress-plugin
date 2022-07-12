@@ -4,6 +4,8 @@ namespace EmploybrandApply;
 
 use Carbon_Fields\Carbon_Fields;
 use EmploybrandApply\Crons\SyncAll;
+use EmploybrandApply\Forms\ApplicationForm;
+use EmploybrandApply\Http\V1\Controllers\ApplicationController;
 use EmploybrandApply\Http\V1\Controllers\WebhookController;
 use EmploybrandApply\PostType\EnvironmentType;
 use EmploybrandApply\PostType\Vacancy;
@@ -29,6 +31,7 @@ class Plugin
          * Register controllers
          */
         WebhookController::register();
+        ApplicationController::register();
 
 
         /*
@@ -40,6 +43,11 @@ class Plugin
          * Register cronjobs
          */
         SyncAll::register();
+
+        /*
+         * Register forms
+         */
+        ApplicationForm::register();
     }
 
 
