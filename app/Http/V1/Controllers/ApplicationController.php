@@ -170,6 +170,10 @@ class ApplicationController extends BaseController
         }
 
         $client->candidates()->create($candidateData);
+
+        $response = new \WP_REST_Response( $request );
+        $response->set_data(['status' => 'SUCCESS']);
+        return $response;
     }
 
 

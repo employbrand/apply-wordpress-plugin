@@ -51,6 +51,9 @@ class ApplicationForm
 
         ?>
         <div class="eb-application">
+            <div class="eb-application-sent">
+                Bedankt voor je sollicitatie!
+            </div>
             <form id="eb-application">
                 <?php
                 foreach ( $fields as $field ) {
@@ -115,8 +118,13 @@ class ApplicationForm
 
         <script>
             jQuery(function($) {
+                let isSubmitting = false;
+
                 $("#eb-application").on('submit', function(event) {
                     event.preventDefault();
+
+                    if(isSubmitting) return;
+                    isSubmitting = true;
 
                     var formData = new FormData();
 
@@ -182,21 +190,26 @@ class ApplicationForm
                         data: formData,
                         enctype: 'multipart/form-data',
                         contentType: false,
-                        processData: false,
-                        success: function(data, textStatus, jqXHR)
-                        {
-                            console.log(data);
-                        },
-                        error: function (jqXHR, textStatus, errorThrown)
-                        {
-                            alert('Er ging helaas wat fout. Probeer het nogmaals, of neem contact met ons op via het contactformulier. Excuses voor het ongemak!');
-                        }
+                        processData: false
+                    }).done(function() {
+
+                        $(".eb-application-sent").css('display', 'block');
+                        $("#eb-application").css('display', 'none');
+
+                        document.querySelector('.close-button').click();
+
+                    }).fail(function() {
+                        alert('Er ging helaas wat fout. Probeer het nogmaals, of neem contact met ons op via het contactformulier. Excuses voor het ongemak!');
                     });
                 });
             });
         </script>
 
         <style>
+            .eb-application-sent {
+                display: none;
+            }
+
             .eb-form-field-label {
                 display: flex;
                 flex-direction: row;
