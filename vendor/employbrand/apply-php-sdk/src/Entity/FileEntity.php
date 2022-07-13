@@ -16,6 +16,8 @@ class FileEntity extends AbstractEntity
 
     public ?int $fileSize = null;
 
+    public bool $private = false;
+
     public ?string $x300ImageUrl = null;
 
     public ?string $x800ImageUrl = null;

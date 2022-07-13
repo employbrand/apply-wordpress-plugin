@@ -23,6 +23,9 @@ class FileApi extends AbstractApi
     /**
      * Upload a file
      *
+     * @param $fileName
+     * @param $fileMime
+     * @param $fileContent
      * @param array|object $data
      * @return FileEntity
      */

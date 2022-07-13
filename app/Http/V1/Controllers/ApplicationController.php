@@ -120,7 +120,7 @@ class ApplicationController extends BaseController
                 $file = $_FILES["field-" . $field['id']];
 
                 $file = $client->files()->upload($file["name"], $file["mime"], fopen($file["tmp_name"], 'r'), [
-                    'in_file_picker' => 'true'
+                    'private' => true
                 ]);
 
                 $candidateData['files'][] = [
