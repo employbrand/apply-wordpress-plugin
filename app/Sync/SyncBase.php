@@ -78,6 +78,10 @@ class SyncBase
                 $value = $obj->customFields[ 'field-' . $availableCustomField->id ] ?? null;
             }
 
+            if($availableCustomField->function_type === 'default-value') {
+                $value = $availableCustomField->value;
+            }
+
             $metaData[ $key ] = $value;
         }
 

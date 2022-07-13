@@ -196,10 +196,6 @@ class ApplicationForm
                         $(".eb-application-sent").css('display', 'block');
                         $("#eb-application").css('display', 'none');
 
-                        setTimeout(() => {
-                            document.querySelector('.dialog-close-button').click();
-                        }, 4000);
-
                     }).fail(function() {
                         alert('Er ging helaas wat fout. Probeer het nogmaals, of neem contact met ons op via het contactformulier. Excuses voor het ongemak!');
                     });

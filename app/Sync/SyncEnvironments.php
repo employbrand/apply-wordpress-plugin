@@ -107,7 +107,12 @@ class SyncEnvironments extends SyncBase
                 '_address' => $environment->address,
                 '_postal_code' => $environment->postalCode,
                 '_city' => $environment->city,
-                '_country' => $environment->country
+                '_country' => $environment->country,
+                '_lat' => $environment->lat,
+                '_lng' => $environment->lng,
+                '_country_name' => $environment->country_name,
+                '_lat_lng' => $environment->lat_lng,
+                '_location' => $environment->location
             ];
 
             /*
