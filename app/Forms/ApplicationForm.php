@@ -52,7 +52,7 @@ class ApplicationForm
         ?>
         <div class="eb-application">
             <div class="eb-application-sent">
-                Bedankt voor je sollicitatie!
+                Bedankt voor je sollicitatie! We nemen zo spoedig mogelijk contact met je op.
             </div>
             <form id="eb-application">
                 <?php
@@ -196,7 +196,9 @@ class ApplicationForm
                         $(".eb-application-sent").css('display', 'block');
                         $("#eb-application").css('display', 'none');
 
-                        document.querySelector('.dialog-close-button').click();
+                        setTimeout(() => {
+                            document.querySelector('.dialog-close-button').click();
+                        }, 4000);
 
                     }).fail(function() {
                         alert('Er ging helaas wat fout. Probeer het nogmaals, of neem contact met ons op via het contactformulier. Excuses voor het ongemak!');
