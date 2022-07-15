@@ -19,6 +19,8 @@ class EnvironmentEntity extends AbstractEntity
 
     public ?string $slug = null;
 
+    public ?string $fullSlug = null;
+
     public ?string $address = null;
 
     public ?string $postalCode = null;
@@ -26,6 +28,16 @@ class EnvironmentEntity extends AbstractEntity
     public ?string $city = null;
 
     public ?string $country = null;
+
+    public ?string $countryName = null;
+
+    public ?string $latLng = null;
+
+    public ?string $location = null;
+
+    public ?float $lat = null;
+
+    public ?float $lng = null;
 
     public ?bool $isMain = false;
 
