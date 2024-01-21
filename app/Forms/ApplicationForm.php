@@ -63,7 +63,7 @@ class ApplicationForm
             <div class="eb-application-sent">
                 Bedankt voor je sollicitatie! We nemen zo spoedig mogelijk contact met je op.
             </div>
-            <form id="eb-application-form-<?php echo $id; ?>">
+            <form class="eb-application-form-<?php echo $id; ?>">
                 <?php
                 foreach ( $fields as $field ) {
                     ?>
