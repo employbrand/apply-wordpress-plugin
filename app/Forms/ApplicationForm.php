@@ -131,100 +131,102 @@ class ApplicationForm
         </div>
 
         <script>
-            jQuery(function($) {
-                let isSubmitting = false;
+            window.onload = (event) => {
+                jQuery(function($) {
+                    let isSubmitting = false;
 
-                $(".eb-application-form-<?php echo $id; ?>").on('submit', function(event) {
-                    event.preventDefault();
+                    $(".eb-application-form-<?php echo $id; ?>").on('submit', function(event) {
+                        event.preventDefault();
 
-                    if(isSubmitting) return;
-                    isSubmitting = true;
+                        if(isSubmitting) return;
+                        isSubmitting = true;
 
-                    var formData = new FormData();
+                        var formData = new FormData();
 
-                    <?php
-
-                    if( is_singular('eb_vacancies') || is_singular('eb_vacancy_previews') ) {
-                        ?>
-                        formData.append('vacancy_id', '<?php echo get_post_meta($post->ID, '_eb_vacancy_id', true); ?>');
                         <?php
-                    }
-                    else if(isset($atts['id'])) {
-                    ?>
-                    formData.append('vacancy_id', '<?php echo get_post_meta($atts['id'], '_eb_vacancy_id', true); ?>');
-                    <?php
-                    }
-                    ?>
 
-                    formData.append('environment_id', '<?php echo get_post_meta($post->ID, '_eb_environment_id', true); ?>');
-                    formData.append('gdpr_store_year', $(this).find('#gdpr_store_year:checked').length > 0);
+                        if( is_singular('eb_vacancies') || is_singular('eb_vacancy_previews') ) {
+                            ?>
+                            formData.append('vacancy_id', '<?php echo get_post_meta($post->ID, '_eb_vacancy_id', true); ?>');
+                            <?php
+                        }
+                        else if(isset($atts['id'])) {
+                        ?>
+                        formData.append('vacancy_id', '<?php echo get_post_meta($atts['id'], '_eb_vacancy_id', true); ?>');
+                        <?php
+                        }
+                        ?>
 
-                    <?php
+                        formData.append('environment_id', '<?php echo get_post_meta($post->ID, '_eb_environment_id', true); ?>');
+                        formData.append('gdpr_store_year', $(this).find('#gdpr_store_year:checked').length > 0);
 
-                    foreach ( $fields as $field ) {
+                        <?php
 
-                        $fieldName = 'eb-field-' . $field[ 'id' ];
-                        $required = $field[ 'required' ] ?? false;
-                        $max = $field[ 'options' ][ 'max' ] ?? null;
+                        foreach ( $fields as $field ) {
 
-                        if($max != null) {
-                    ?>
-                    if($(this).find('#<?php echo $fieldName; ?>').val().length > <?php echo $max; ?>) {
-                        alert('<?php echo $field['name'] . ' max maximaal ' . $max . ' tekens zijn.'; ?>');
-                        return;
-                    }
-                    <?php
+                            $fieldName = 'eb-field-' . $field[ 'id' ];
+                            $required = $field[ 'required' ] ?? false;
+                            $max = $field[ 'options' ][ 'max' ] ?? null;
+
+                            if($max != null) {
+                        ?>
+                        if($(this).find('#<?php echo $fieldName; ?>').val().length > <?php echo $max; ?>) {
+                            alert('<?php echo $field['name'] . ' max maximaal ' . $max . ' tekens zijn.'; ?>');
+                            return;
+                        }
+                        <?php
+                            }
+
+                            if($required) {
+                        ?>
+                        if($(this).find('#<?php echo $fieldName; ?>').val() === '') {
+                            alert('Niet alle vereiste velden zijn ingevuld.')
+                            return;
+                        }
+                        <?php
+                            }
+
+                        if( $field[ 'type' ] === 'file' ) {
+                        ?>
+                        if($(this).find('#<?php echo $fieldName; ?>')[0].files.length > 0) {
+                            formData.append('<?php echo 'field-' . $field[ 'id' ]; ?>', $(this).find('#<?php echo $fieldName; ?>')[0].files[0]);
+                        }
+                        <?php
+                        }
+                        else if( $field[ 'type' ] === 'checkbox' ) {
+                        ?>
+                        formData.append('<?php echo 'field-' . $field[ 'id' ]; ?>', $(this).find('#<?php echo $fieldName; ?>:checked').length > 0);
+                        <?php
+                        }
+                        else {
+                        ?>
+                        formData.append('<?php echo 'field-' . $field[ 'id' ]; ?>', $(this).find('#<?php echo $fieldName; ?>').val());
+                        <?php
                         }
 
-                        if($required) {
-                    ?>
-                    if($(this).find('#<?php echo $fieldName; ?>').val() === '') {
-                        alert('Niet alle vereiste velden zijn ingevuld.')
-                        return;
-                    }
-                    <?php
                         }
+                        ?>
 
-                    if( $field[ 'type' ] === 'file' ) {
-                    ?>
-                    if($(this).find('#<?php echo $fieldName; ?>')[0].files.length > 0) {
-                        formData.append('<?php echo 'field-' . $field[ 'id' ]; ?>', $(this).find('#<?php echo $fieldName; ?>')[0].files[0]);
-                    }
-                    <?php
-                    }
-                    else if( $field[ 'type' ] === 'checkbox' ) {
-                    ?>
-                    formData.append('<?php echo 'field-' . $field[ 'id' ]; ?>', $(this).find('#<?php echo $fieldName; ?>:checked').length > 0);
-                    <?php
-                    }
-                    else {
-                    ?>
-                    formData.append('<?php echo 'field-' . $field[ 'id' ]; ?>', $(this).find('#<?php echo $fieldName; ?>').val());
-                    <?php
-                    }
+                        $.ajax({
+                            url : "/wp-json/employbrand-apply/v1/apply",
+                            type: "POST",
+                            data: formData,
+                            enctype: 'multipart/form-data',
+                            contentType: false,
+                            processData: false
+                        }).done(function() {
 
-                    }
-                    ?>
+                            $(".eb-application-sent").css('display', 'block');
+                            $(".eb-application-form-<?php echo $id; ?>").css('display', 'none');
+                            $(".eb-application-form-intro").css('display', 'none');
 
-                    $.ajax({
-                        url : "/wp-json/employbrand-apply/v1/apply",
-                        type: "POST",
-                        data: formData,
-                        enctype: 'multipart/form-data',
-                        contentType: false,
-                        processData: false
-                    }).done(function() {
-
-                        $(".eb-application-sent").css('display', 'block');
-                        $(".eb-application-form-<?php echo $id; ?>").css('display', 'none');
-                        $(".eb-application-form-intro").css('display', 'none');
-
-                    }).fail(function() {
-                        isSubmitting = false;
-                        alert('Er ging helaas wat fout. Probeer het nogmaals, of neem contact met ons op via het contactformulier. Excuses voor het ongemak!');
+                        }).fail(function() {
+                            isSubmitting = false;
+                            alert('Er ging helaas wat fout. Probeer het nogmaals, of neem contact met ons op via het contactformulier. Excuses voor het ongemak!');
+                        });
                     });
                 });
-            });
+            };
         </script>
 
         <style>
