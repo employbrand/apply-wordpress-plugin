@@ -11,6 +11,7 @@ use EmploybrandApply\Http\V1\Controllers\WebhookController;
 use EmploybrandApply\PostType\EnvironmentType;
 use EmploybrandApply\PostType\Vacancy;
 use EmploybrandApply\Page\Options;
+use EmploybrandApply\PostType\VacancyPreview;
 
 
 class Plugin
@@ -25,6 +26,7 @@ class Plugin
          * Register post types
          */
         Vacancy::register();
+        VacancyPreview::register();
         EnvironmentType::register();
 
 
