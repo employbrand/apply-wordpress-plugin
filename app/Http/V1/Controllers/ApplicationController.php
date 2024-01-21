@@ -119,9 +119,24 @@ class ApplicationController extends BaseController
 
                 $file = $_FILES["field-" . $field['id']];
 
-                $file = $client->files()->upload($file["name"], $file["mime"], fopen($file["tmp_name"], 'r'), [
-                    'private' => true
-                ]);
+                try {
+                    $file = $client->files()->upload($file["name"], $file["mime"], fopen($file["tmp_name"], 'r'), [
+                        'private' => true
+                    ]);
+                }
+                catch (\Exception $exception) {
+                    $error = json_decode($exception->getMessage());
+
+                    $response = new \WP_REST_Response( $request );
+
+                    $message = $error->errors->message[0];
+
+                    if($message === 'Het bestandstype is niet toegestaan.') $message = 'Het bestandstype is niet toegestaan. Upload met voorkeur een .pdf of .docx bestand.';
+
+                    $response->set_data(['status' => 'ERROR', 'message' => $message]);
+                    $response->set_status(422);
+                    return $response;
+                }
 
                 $candidateData['files'][] = [
                     'name' => $field['name'],
@@ -169,11 +184,23 @@ class ApplicationController extends BaseController
             }
         }
 
-        $client->candidates()->create($candidateData);
+        $candidateData['gdpr_store_year'] = $request->get_param('gdpr_store_year') === 'true' ? 1 : 0;
 
-        $response = new \WP_REST_Response( $request );
-        $response->set_data(['status' => 'SUCCESS']);
-        return $response;
+        try {
+            $client->candidates()->create($candidateData);
+
+            $response = new \WP_REST_Response( $request );
+            $response->set_data(['status' => 'SUCCESS']);
+            return $response;
+        }
+        catch (\Exception $exception) {
+            $error = json_decode($exception->getMessage());
+
+            $response = new \WP_REST_Response( $request );
+            $response->set_data(['status' => 'ERROR', 'message' => 'Er ging helaas wat fout. Probeer het nogmaals, of neem contact met ons op via het contactformulier. Excuses voor het ongemak!']);
+            $response->set_status(422);
+            return $response;
+        }
     }
 
 

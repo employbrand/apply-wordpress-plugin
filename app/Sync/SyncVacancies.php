@@ -48,8 +48,11 @@ class SyncVacancies extends SyncBase
     }
 
 
-    public function syncSingle($id)
+    public function syncSingle($id, $preview = false)
     {
+        $metaKeyFieldId = '_eb_vacancy_id';
+        if($preview) $metaKeyFieldId = '_eb_preview_vacancy_id';
+
         global $wpdb;
         $wpId = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_eb_vacancy_id' AND `meta_value` = %s LIMIT 0,1", $id));
         $wpId = (count($wpId) == 0 ? null : $wpId[ 0 ]->post_id);
@@ -60,12 +63,14 @@ class SyncVacancies extends SyncBase
             /*
              * Only show published vacancies
              */
-            if( $vacancy->status !== 'published' ) {
-                if( $wpId != null ) {
-                    wp_delete_post($wpId);
-                }
+            if(!$preview) {
+                if( $vacancy->status !== 'published' ) {
+                    if( $wpId != null ) {
+                        wp_delete_post($wpId);
+                    }
 
-                return;
+                    return null;
+                }
             }
 
 
@@ -78,15 +83,17 @@ class SyncVacancies extends SyncBase
                 /*
                  * Only update when there are changes
                  */
-                $version = get_post_meta($wpId, '_version', true);
-                if( $version == $vacancy->version )
-                    return;
+                if(!$preview) {
+                    $version = get_post_meta($wpId, '_version', true);
+                    if( $version == $vacancy->version )
+                        return null;
+                }
 
 
                 wp_update_post([
                     'ID' => $wpId,
                     'post_title' => $vacancy->function,
-                    'post_name' => $vacancy->slug,
+                    'post_name' => $preview ? $vacancy->id.'-'.$vacancy->version : $vacancy->slug,
                     'post_status' => 'publish'
                 ]);
             }
@@ -97,9 +104,9 @@ class SyncVacancies extends SyncBase
 
                 $data = [
                     'post_title' => $vacancy->function,
-                    'post_name' => $vacancy->slug,
+                    'post_name' => $preview ? $vacancy->id.'-'.$vacancy->version : $vacancy->slug,
                     'post_status' => 'publish',
-                    'post_type' => 'eb_vacancies'
+                    'post_type' => $preview ? 'eb_vacancy_previews' : 'eb_vacancies'
                 ];
                 $wpId = wp_insert_post($data);
             }
@@ -140,6 +147,8 @@ class SyncVacancies extends SyncBase
                 wp_delete_post($wpId);
             }
         }
+
+        return $wpId;
     }
 
 }

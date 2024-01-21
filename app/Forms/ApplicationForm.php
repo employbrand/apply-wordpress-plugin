@@ -24,9 +24,14 @@ class ApplicationForm
 
         global $post;
 
-        if( is_singular('eb_vacancies') ) {
+        if( is_singular('eb_vacancies') || is_singular('eb_vacancy_previews') ) {
 
             $fields = get_post_meta($post->ID, '_form_fields', true);
+            if($fields == null) $fields = [];
+        }
+        else if(isset($atts['id'])) {
+
+            $fields = get_post_meta($atts['id'], '_form_fields', true);
             if($fields == null) $fields = [];
         }
         else {
@@ -49,12 +54,16 @@ class ApplicationForm
             $fields = get_option('employbrand_apply_application_form');
         }
 
+        if($fields == null || !is_array($fields)) return;
+
+        $id = uniqid();
+
         ?>
         <div class="eb-application">
             <div class="eb-application-sent">
                 Bedankt voor je sollicitatie! We nemen zo spoedig mogelijk contact met je op.
             </div>
-            <form id="eb-application">
+            <form id="eb-application-form-<?php echo $id; ?>">
                 <?php
                 foreach ( $fields as $field ) {
                     ?>
@@ -110,6 +119,11 @@ class ApplicationForm
                 }
                 ?>
 
+                <label>
+                    <input type="checkbox" id="gdpr_store_year" class="eb-form-checkbox" />
+                    Mijn gegevens mogen 12 maanden in portefeuille bewaard blijven
+                </label>
+
                 <div class="eb-application-button">
                     <button class="eb-application-submit">Solliciteren</button>
                 </div>
@@ -120,7 +134,7 @@ class ApplicationForm
             jQuery(function($) {
                 let isSubmitting = false;
 
-                $("#eb-application").on('submit', function(event) {
+                $(".eb-application-form-<?php echo $id; ?>").on('submit', function(event) {
                     event.preventDefault();
 
                     if(isSubmitting) return;
@@ -130,13 +144,21 @@ class ApplicationForm
 
                     <?php
 
-                    if( is_singular('eb_vacancies') ) {
+                    if( is_singular('eb_vacancies') || is_singular('eb_vacancy_previews') ) {
                         ?>
                         formData.append('vacancy_id', '<?php echo get_post_meta($post->ID, '_eb_vacancy_id', true); ?>');
                         <?php
                     }
+                    else if(isset($atts['id'])) {
                     ?>
+                    formData.append('vacancy_id', '<?php echo get_post_meta($atts['id'], '_eb_vacancy_id', true); ?>');
+                    <?php
+                    }
+                    ?>
+
                     formData.append('environment_id', '<?php echo get_post_meta($post->ID, '_eb_environment_id', true); ?>');
+                    formData.append('gdpr_store_year', $(this).find('#gdpr_store_year:checked').length > 0);
+
                     <?php
 
                     foreach ( $fields as $field ) {
@@ -194,9 +216,11 @@ class ApplicationForm
                     }).done(function() {
 
                         $(".eb-application-sent").css('display', 'block');
-                        $("#eb-application").css('display', 'none');
+                        $(".eb-application-form-<?php echo $id; ?>").css('display', 'none');
+                        $(".eb-application-form-intro").css('display', 'none');
 
                     }).fail(function() {
+                        isSubmitting = false;
                         alert('Er ging helaas wat fout. Probeer het nogmaals, of neem contact met ons op via het contactformulier. Excuses voor het ongemak!');
                     });
                 });

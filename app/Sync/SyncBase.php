@@ -37,6 +37,9 @@ class SyncBase
             $key = '_' . $availableCustomField->field_key;
             $value = $obj->customFields[ 'field-' . $availableCustomField->id ] ?? null;
 
+            if( $availableCustomField->type === 'text' ) {
+                $value = str_replace(PHP_EOL, '<br>', $value);
+            }
             if( $availableCustomField->type === 'image' ) {
                 $value = ($value[ 'url' ] ?? null);
             }

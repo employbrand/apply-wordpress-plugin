@@ -5,9 +5,10 @@ namespace EmploybrandApply\PostType;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 use EmploybrandApply\EmploybrandApplyClient;
+use EmploybrandApply\Sync\SyncVacancies;
 
 
-class Vacancy
+class VacancyPreview
 {
 
     public static function register()
@@ -20,20 +21,18 @@ class Vacancy
 
     public function registerPostType()
     {
-        $slug = get_option('employbrand_apply_vacancy_slug') ?? 'vacatures';
-
-        register_post_type('eb_vacancies',
+        register_post_type('eb_vacancy_previews',
             [
                 'labels' => [
-                    'name' => __('Vacatures', 'employbrand-apply'),
-                    'singular_name' => __('Vacature', 'employbrand-apply'),
+                    'name' => __('Vacature voorvertoningen', 'employbrand-apply'),
+                    'singular_name' => __('Vacature voorvertoning', 'employbrand-apply'),
                 ],
                 'show_in_menu' => true,
                 'capability_type' => 'post',
                 'public' => true,
-                'has_archive' => true,
-                'slug' => $slug,
-                'rewrite' => ['slug' => $slug, 'with_front' => true],
+                'has_archive' => false,
+                'slug' => 'vacature-preview',
+                'rewrite' => ['slug' => 'vacature-voorvertoningen', 'with_front' => true],
                 'supports' => [
                     'title'
                 ]
