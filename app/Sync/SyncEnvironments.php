@@ -13,7 +13,7 @@ class SyncEnvironments extends SyncBase
     {
         $environments = $this->employbrandApplyClient->environments()->list()->all();
 
-        $ids = [];
+        $ids = [1];
 
         foreach ( $environments as $environment ) {
 

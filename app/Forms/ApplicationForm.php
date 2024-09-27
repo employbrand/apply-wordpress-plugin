@@ -56,7 +56,14 @@ class ApplicationForm
 
         if($fields == null || !is_array($fields)) return;
 
-        $id = uniqid();
+        /*
+         * id
+         */
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $id = '';
+        for ($i = 0; $i < 10; $i++) {
+            $id = $characters[rand(0, strlen($characters))];
+        }
 
         ?>
         <div class="eb-application">
@@ -135,7 +142,7 @@ class ApplicationForm
                 jQuery(function($) {
                     let isSubmitting = false;
 
-                    $(".eb-application-form-<?php echo $id; ?>").on('submit', function(event) {
+                    $(document).on('submit', ".eb-application-form-<?php echo $id; ?>", function(event) {
                         event.preventDefault();
 
                         if(isSubmitting) return;

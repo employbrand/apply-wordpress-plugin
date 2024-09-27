@@ -34,7 +34,13 @@ class SyncBase
             if( !in_array($availableCustomField->type, ['text', 'image', 'number', 'dropdown', 'repeater']) )
                 continue;
 
-            $key = '_' . $availableCustomField->field_key;
+            if($availableCustomField->field_key === 'fifu_image_url') {//thumbnail
+                $key = $availableCustomField->field_key;
+            }
+            else {
+                $key = '_' . $availableCustomField->field_key;
+            }
+
             $value = $obj->customFields[ 'field-' . $availableCustomField->id ] ?? null;
 
             if( $availableCustomField->type === 'text' ) {
